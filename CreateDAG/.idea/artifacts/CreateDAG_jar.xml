@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CreateDAG:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/CreateDAG_jar</output-path>
+    <root id="archive" name="CreateDAG.jar">
+      <element id="module-output" name="CreateDAG" />
+    </root>
+  </artifact>
+</component>
