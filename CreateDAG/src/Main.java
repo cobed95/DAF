@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -8,14 +9,16 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        String dataGraphFile = args[0];
-        String queryGraphFile = args[1];
-        int numQueries = Integer.parseInt(args[2]);
+//        String dataGraphFile = args[0];
+//        String queryGraphFile = args[1];
+//        int numQueries = Integer.parseInt(args[2]);
+        String queryGraphFile = "data/human_40n";
 
-        Scanner scanner = new Scanner(queryGraphFile);
+        Scanner scanner = new Scanner(new File(queryGraphFile));
 
         ArrayList<ArrayList<IdDegreePair>> graphsWithDegrees = new ArrayList<>();
 
+        scanner.nextLine();
         while (scanner.hasNextLine())
             graphsWithDegrees.add(readDegrees(scanner));
 
@@ -39,9 +42,6 @@ public class Main {
 
     public static ArrayList<IdDegreePair> readDegrees(Scanner scanner) {
         ArrayList<IdDegreePair> result = new ArrayList<>();
-
-        if (scanner.hasNextLine())
-            scanner.nextLine();
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
