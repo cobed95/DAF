@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -30,14 +31,35 @@ public class Main {
                                                                               .collect(Collectors.toCollection(ArrayList::new)))
                                                              .collect(Collectors.toCollection(ArrayList::new));
 
+//        ids.forEach(System.out::println);
+
         ArrayList<String> output = ids.stream()
                                       .map(list -> list.stream()
                                                        .map(id -> id.toString())
-                                                       .reduce("", (a, b) -> a + " " + b))
+                                                       .reduce((a, b) -> a + " " + b).get())
                                       .collect(Collectors.toCollection(ArrayList::new));
+
+//        System.out.println(output);
 
         PrintStream out = new PrintStream(queryGraphFile + ".dag");
         output.forEach(out::println);
+
+        /**
+         * From here
+         */
+//        Scanner scanner1 = new Scanner(new File("data/human_40n.dag"));
+//        while (scanner1.hasNextLine()) {
+//            String line = scanner1.nextLine();
+//            if (line.equals("")) continue;
+//            String[] splitted = line.split(" ");
+//            System.out.println(Arrays.toString(splitted));
+//            System.out.println(splitted.length);
+//            ArrayList<Integer> values = new ArrayList<>();
+//            for (String str : splitted)
+//                values.add(Integer.parseInt(str));
+//            Collections.sort(values);
+//            System.out.println(values);
+//        }
     }
 
     public static ArrayList<IdDegreePair> readDegrees(Scanner scanner) {
