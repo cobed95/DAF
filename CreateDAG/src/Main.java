@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-//        String dataGraphFile = args[0];
-//        String queryGraphFile = args[1];
-//        int numQueries = Integer.parseInt(args[2]);
-        String queryGraphFile = "data/human_40n";
+        String dataGraphFile = args[0];
+        String queryGraphFile = args[1];
+        int numQueries = Integer.parseInt(args[2]);
+//        String queryGraphFile = "data/human_40n";
 
         Scanner scanner = new Scanner(new File(queryGraphFile));
 
