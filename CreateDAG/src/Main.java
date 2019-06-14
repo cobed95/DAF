@@ -40,8 +40,8 @@ public class Main {
                                                            .reduce((a, b) -> a + " " + b).get())
                                           .collect(Collectors.toCollection(ArrayList::new));
 
-        PrintStream out = new PrintStream(queryGraphFile + ".dag");
-        output.forEach(out::println);
+//        PrintStream out = new PrintStream(queryGraphFile + ".dag");
+        output.forEach(System.out::println);
     }
 
     /**
