@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -17,52 +16,40 @@ public class Main {
 
         Scanner scanner = new Scanner(new File(queryGraphFile));
 
-        ArrayList<ArrayList<IdDegreePair>> graphsWithDegrees = new ArrayList<>();
+        ArrayList<ArrayList<IdDegreePair>> idDegreeLists = new ArrayList<>();
 
+        // First line unconditionally starts with "t". So consume that and start reading IdDegreePairs
         scanner.nextLine();
         while (scanner.hasNextLine())
-            graphsWithDegrees.add(readDegrees(scanner));
+            idDegreeLists.add(readIdDegreePairs(scanner));
 
-        graphsWithDegrees.forEach(Collections::sort);
+        // Sort each ArrayList of IdDegreePairs in descending order.
+        idDegreeLists.forEach(Collections::sort);
 
-        ArrayList<ArrayList<Integer>> ids = graphsWithDegrees.stream()
+        // Extract Ids from sorted lists.
+        ArrayList<ArrayList<Integer>> idLists = idDegreeLists.stream()
                                                              .map(list -> list.stream()
                                                                               .map(pair -> pair.getId())
                                                                               .collect(Collectors.toCollection(ArrayList::new)))
                                                              .collect(Collectors.toCollection(ArrayList::new));
 
-//        ids.forEach(System.out::println);
+        // Build output strings.
+        ArrayList<String> output = idLists.stream()
+                                          .map(list -> list.stream()
+                                                           .map(id -> id.toString())
+                                                           .reduce((a, b) -> a + " " + b).get())
+                                          .collect(Collectors.toCollection(ArrayList::new));
 
-        ArrayList<String> output = ids.stream()
-                                      .map(list -> list.stream()
-                                                       .map(id -> id.toString())
-                                                       .reduce((a, b) -> a + " " + b).get())
-                                      .collect(Collectors.toCollection(ArrayList::new));
-
-//        System.out.println(output);
-
-        PrintStream out = new PrintStream(queryGraphFile + ".dag");
-        output.forEach(out::println);
-
-        /**
-         * From here
-         */
-//        Scanner scanner1 = new Scanner(new File("data/human_40n.dag"));
-//        while (scanner1.hasNextLine()) {
-//            String line = scanner1.nextLine();
-//            if (line.equals("")) continue;
-//            String[] splitted = line.split(" ");
-//            System.out.println(Arrays.toString(splitted));
-//            System.out.println(splitted.length);
-//            ArrayList<Integer> values = new ArrayList<>();
-//            for (String str : splitted)
-//                values.add(Integer.parseInt(str));
-//            Collections.sort(values);
-//            System.out.println(values);
-//        }
+//        PrintStream out = new PrintStream(queryGraphFile + ".dag");
+        output.forEach(System.out::println);
     }
 
-    public static ArrayList<IdDegreePair> readDegrees(Scanner scanner) {
+    /**
+     * This consumes the scanner line by line until the first token in the line is equal to "t"
+     * @param scanner
+     * @return An ArrayList of IdDegreePair objects
+     */
+    public static ArrayList<IdDegreePair> readIdDegreePairs(Scanner scanner) {
         ArrayList<IdDegreePair> result = new ArrayList<>();
 
         while (scanner.hasNextLine()) {
@@ -78,6 +65,11 @@ public class Main {
         return result;
     }
 
+    /**
+     * Immutable tuple of size 2.
+     * @param <A> type of first element
+     * @param <B> type of second element
+     */
     public static class Pair<A, B> {
         private final A first;
         private final B second;
@@ -96,6 +88,9 @@ public class Main {
         }
     }
 
+    /**
+     * A pair of vertex ID and degree.
+     */
     public static class IdDegreePair implements Comparable<IdDegreePair> {
         private final Pair<Integer, Integer> pair;
 
@@ -111,6 +106,12 @@ public class Main {
             return this.pair.getSecond();
         }
 
+        /**
+         * This returns the oppositely signed value of conventional compareTo
+         * between two integers.
+         * @param other
+         * @return -1 * (degree_of_this.compareTo(degree_of_other))
+         */
         public int compareTo(IdDegreePair other) {
             return other.getDegree().compareTo(this.getDegree());
         }
